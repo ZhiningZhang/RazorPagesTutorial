@@ -1,5 +1,6 @@
 ﻿using RazorPagesTutorial.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace RazorPagesTutorial.Services
 {
@@ -25,6 +26,11 @@ namespace RazorPagesTutorial.Services
         public IEnumerable<Employee> GetAllEmployees()
         {
             return _employeeList;
+        }
+
+        public Employee GetEmployee(int id)
+        {
+            return _employeeList.FirstOrDefault(e => e.Id == id);
         }
     }
 }
