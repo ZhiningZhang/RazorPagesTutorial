@@ -25,7 +25,8 @@ namespace RazorPagesTutorial.Pages.Employees
             this.webHostEnvironment = webHostEnvironment;
         }
 
-        public Employee Employee { get; private set; }
+        [BindProperty]
+        public Employee Employee { get; set; }
 
         [BindProperty]
         public IFormFile Photo { get; set; }
@@ -47,25 +48,33 @@ namespace RazorPagesTutorial.Pages.Employees
             return Page();
         }
 
-        public IActionResult OnPost(Employee employee)
+        public IActionResult OnPost()
         {
-            if (Photo != null)
+            if (ModelState.IsValid)
             {
-                // If a new photo is uploaded, the existing photo must be
-                // deleted. So check if there is an existing photo and delete
-                //if (employee.PhotoPath != null)
-                //{
-                //    string filePath = Path.Combine(webHostEnvironment.WebRootPath,
-                //        "images", employee.PhotoPath);
-                //    System.IO.File.Delete(filePath);
-                //}
-                // Save the new photo in wwwroot/images folder and update
-                // PhotoPath property of the employee object
-                employee.PhotoPath = ProcessUploadedFile();
-            }
 
-            Employee = employeeRepository.Update(employee);
-            return RedirectToPage("Index");
+                if (Photo != null)
+                {
+                    // If a new photo is uploaded, the existing photo must be
+                    // deleted. So check if there is an existing photo and delete
+                    //if (employee.PhotoPath != null)
+                    //{
+                    //    string filePath = Path.Combine(webHostEnvironment.WebRootPath,
+                    //        "images", employee.PhotoPath);
+                    //    System.IO.File.Delete(filePath);
+                    //}
+                    // Save the new photo in wwwroot/images folder and update
+                    // PhotoPath property of the employee object
+                    Employee.PhotoPath = ProcessUploadedFile();
+                }
+
+                Employee = employeeRepository.Update(Employee);
+                return RedirectToPage("Index");
+            }
+            else
+            {
+                return Page();
+            }
         }
 
         public void OnPostUpdateNotificationPreferences(int id)
