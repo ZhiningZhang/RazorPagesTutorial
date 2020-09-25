@@ -1,14 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using RazorPagesTutorial.Models;
 using RazorPagesTutorial.Services;
+using System;
+using System.IO;
 
 namespace RazorPagesTutorial.Pages.Employees
 {
@@ -17,9 +14,8 @@ namespace RazorPagesTutorial.Pages.Employees
         private readonly IEmployeeRepository employeeRepository;
         private readonly IWebHostEnvironment webHostEnvironment;
 
-
         public EditModel(IEmployeeRepository employeeRepository,
-            IWebHostEnvironment webHostEnvironment)
+                         IWebHostEnvironment webHostEnvironment)
         {
             this.employeeRepository = employeeRepository;
             this.webHostEnvironment = webHostEnvironment;
@@ -36,9 +32,19 @@ namespace RazorPagesTutorial.Pages.Employees
 
         public string Message { get; set; }
 
-        public IActionResult OnGet(int id)
+        // Make the id parameter optional
+        public IActionResult OnGet(int? id)
         {
-            Employee = employeeRepository.GetEmployee(id);
+            // if id parameter has value, retrieve the existing
+            // employee details, else create a new Employee
+            if (id.HasValue)
+            {
+                Employee = employeeRepository.GetEmployee(id.Value);
+            }
+            else
+            {
+                Employee = new Employee();
+            }
 
             if (Employee == null)
             {
@@ -52,32 +58,35 @@ namespace RazorPagesTutorial.Pages.Employees
         {
             if (ModelState.IsValid)
             {
-
                 if (Photo != null)
                 {
-                    // If a new photo is uploaded, the existing photo must be
-                    // deleted. So check if there is an existing photo and delete
-                    //if (employee.PhotoPath != null)
-                    //{
-                    //    string filePath = Path.Combine(webHostEnvironment.WebRootPath,
-                    //        "images", employee.PhotoPath);
-                    //    System.IO.File.Delete(filePath);
-                    //}
-                    // Save the new photo in wwwroot/images folder and update
-                    // PhotoPath property of the employee object
+                    if (Employee.PhotoPath != null)
+                    {
+                        string filePath = Path.Combine(webHostEnvironment.WebRootPath,
+                            "images", Employee.PhotoPath);
+                        System.IO.File.Delete(filePath);
+                    }
+
                     Employee.PhotoPath = ProcessUploadedFile();
                 }
 
-                Employee = employeeRepository.Update(Employee);
+                // If Employee ID > 0, call Update() to update existing 
+                // employee details else call Add() to add new employee
+                if (Employee.Id > 0)
+                {
+                    Employee = employeeRepository.Update(Employee);
+                }
+                else
+                {
+                    Employee = employeeRepository.Add(Employee);
+                }
                 return RedirectToPage("Index");
             }
-            else
-            {
-                return Page();
-            }
+
+            return Page();
         }
 
-        public void OnPostUpdateNotificationPreferences(int id)
+        public IActionResult OnPostUpdateNotificationPreferences(int id)
         {
             if (Notify)
             {
@@ -88,7 +97,9 @@ namespace RazorPagesTutorial.Pages.Employees
                 Message = "You have turned off email notifications";
             }
 
-            Employee = employeeRepository.GetEmployee(id);
+            TempData["message"] = Message;
+
+            return RedirectToPage("Details", new { id = id });
         }
 
         private string ProcessUploadedFile()
@@ -108,6 +119,5 @@ namespace RazorPagesTutorial.Pages.Employees
 
             return uniqueFileName;
         }
-
     }
 }
