@@ -5,9 +5,9 @@ VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RazorPagesTutorial", "RazorPagesTutorial\RazorPagesTutorial.csproj", "{98061443-3A52-4BD1-AA24-78BC9886FC4B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorPagesTutorial.Models", "RazorPagesTutorial.Models\RazorPagesTutorial.Models.csproj", "{73E03451-764E-4879-A8E6-C57F8EEAE39D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RazorPagesTutorial.Models", "RazorPagesTutorial.Models\RazorPagesTutorial.Models.csproj", "{73E03451-764E-4879-A8E6-C57F8EEAE39D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RazorPagesTutorial.Services", "RazorPagesTutorial.Services\RazorPagesTutorial.Services.csproj", "{0B938981-4035-431F-858D-87A6B19299E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RazorPagesTutorial.Services", "RazorPagesTutorial.Services\RazorPagesTutorial.Services.csproj", "{0B938981-4035-431F-858D-87A6B19299E1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

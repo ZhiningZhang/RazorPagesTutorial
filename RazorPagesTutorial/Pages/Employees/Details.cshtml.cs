@@ -21,11 +21,17 @@ namespace RazorPagesTutorial.Pages.Employees
             _employeeRepository = employeeRepository;
         }
 
-        public void OnGet(int id)
+        public IActionResult OnGet(int id = 1)
         {
             message = id.ToString();
 
             Employee = _employeeRepository.GetEmployee(id);
+
+            if(Employee == null)
+            {
+                return RedirectToPage("/NotFound");
+            }
+            return Page();
         }
     }
 }

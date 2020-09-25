@@ -33,6 +33,9 @@ namespace RazorPagesTutorial
                 options.LowercaseUrls = true;
                 options.LowercaseQueryStrings = true;
                 options.AppendTrailingSlash = true;
+
+                //https://www.youtube.com/watch?v=5kbF4dAD14I&list=PL6n9fhu94yhX6J31qad0wSO1N_rgGbOPV&index=12
+                options.ConstraintMap.Add("even", typeof(EvenConstraint));
             });
         }
 
